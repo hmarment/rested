@@ -1,4 +1,5 @@
 __version__ = '0.0.1'
 
-from .client import Resources, Rested
+from .integration import Integration
 from .resource import Resource
+from .client import Rested
