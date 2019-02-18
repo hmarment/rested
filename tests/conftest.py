@@ -7,11 +7,12 @@ from rested import Integration, Resource
 def setup_resource():
     """Set up a test resource."""
     print('Setting up a test resource for external integrations')
-    return Resource(name='myresource')
+    return Resource(name='todos')
 
 
 @pytest.fixture(scope='session')
 def setup_integration():
     """Set up a test resource."""
     print('Setting up a test integration for an API')
-    return Integration(name='myapi')
+    return Integration(name='myapi',
+                       base_url='https://jsonplaceholder.typicode.com')

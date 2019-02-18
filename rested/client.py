@@ -10,7 +10,7 @@ class Rested:
     def __init__(self, integrations=None):
 
         self._integrations = integrations if integrations else list()
-        self._wire_integrations(integrations=integrations)
+        self._wire_integrations(integrations=self._integrations)
 
     @property
     def integrations(self):
