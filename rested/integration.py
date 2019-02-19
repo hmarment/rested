@@ -28,6 +28,7 @@ class Integration:
         Integration.<resource-name>.
         """
         if resource and isinstance(resource, Resource):
+            setattr(resource, '_client', self)
             setattr(self, resource.name, resource)
 
             if resource not in self._resources:
@@ -38,14 +39,32 @@ class Integration:
         parts = [self.base_url] + list(parts)
         return '/'.join(str(part).strip('/') for part in parts)
 
-    def _request(self, http_method, url):
+    def _request(self, http_method, url, json=None):
 
         with self._session as session:
-            with session.request(http_method, url) as response:
+            with session.request(http_method, url, json=json) as response:
                 return response
 
     def _get(self, url):
 
         response = self._request('GET', url)
+
+        return response
+
+    def _post(self, url, json=None):
+
+        response = self._request('POST', url, json=json)
+
+        return response
+
+    def _put(self, url, json=None):
+
+        response = self._request('PUT', url, json=json)
+
+        return response
+
+    def _delete(self, url):
+
+        response = self._request('DELETE', url)
 
         return response

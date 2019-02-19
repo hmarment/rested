@@ -42,18 +42,7 @@ class Rested:
         for integration in integrations:
             self._wire(integration)
 
-    # def _set_headers(self, headers=None):
-    #     """Update default headers to include any additionals."""
-    #     default_headers = ENDPOINTS.get('Headers', {})
 
-    #     # calls to e.g. auth API might not be authenticated
-    #     if self._is_authenticated():
-    #         default_headers.update({'X-AUTH-TOKEN': self.token.token})
-    #     if headers:
-    #         default_headers.update(headers)
-    #     return default_headers
+class Integrations:
 
-    # def _build_url(self, *parts):
-    #     """Enforce the slash."""
-    #     parts = [self.base_url] + list(parts)
-    #     return '/'.join(str(part).strip('/') for part in parts)
+    def __init__(self, inte)
