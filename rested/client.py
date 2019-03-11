@@ -11,6 +11,7 @@ class Rested:
     """
     A basic HTTP Rest client for API Integrations
     """
+
     def __init__(self, integrations=None):
 
         self._integrations = integrations if integrations else list()
@@ -43,6 +44,6 @@ class Rested:
             self._wire(integration)
 
 
-class Integrations:
+# class Integrations:
 
-    def __init__(self, inte)
+#     def __init__(self, inte)
