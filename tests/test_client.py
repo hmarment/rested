@@ -55,8 +55,17 @@ def test_client_multiple_integrations(client_with_multiple_integrations):
     )
 
 
-# def test_client_new(client, integration):
+def test_client_new(client, test_integration):
 
-#     client.integrations.new(name=integration.name, base_url=integration.base_url)
-#     assert len(client.integrations) == 1
-#     assert hasattr(client, integration.name)
+    client.new.integration(name="newapi",
+                           base_url=test_integration.base_url)
+    assert len(client.integrations) == 2
+    assert hasattr(client, test_integration.name)
+
+
+def test_client_new_existing(client, test_integration):
+
+    client.new.integration(name=test_integration.name,
+                           base_url=test_integration.base_url)
+    assert len(client.integrations) == 2
+    assert hasattr(client, test_integration.name)

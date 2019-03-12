@@ -1,6 +1,8 @@
 import pytest
+import requests
 
 import rested
+
 from rested import Integration, Resource
 
 GET_URL = "https://jsonplaceholder.typicode.com/posts/1"
@@ -29,11 +31,19 @@ class MockResponse:
         if type(self.content) in [list, dict]:
             return self.content
 
+    def raise_for_status(self):
+
+        if self.status_code > 299:
+            raise requests.HTTPError
+
 
 def request_side_effect(http_method, url, json):
 
     if http_method == "GET" and url == GET_URL:
         return MockResponse(200, GET_JSON)
+
+    if http_method == "GET" and url != GET_URL:
+        return MockResponse(404, {})
 
     if http_method == "POST" and url == POST_URL and json == POST_JSON:
         return MockResponse(201, POST_JSON)

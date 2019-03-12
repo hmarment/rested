@@ -5,7 +5,7 @@ from __future__ import division
 import logging
 
 logFormatter = "%(asctime)s - %(levelname)s - %(module)s:%(funcName)s " "- %(message)s"
-logging.basicConfig(format=logFormatter, level=logging.DEBUG)
+logging.basicConfig(format=logFormatter, level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 
@@ -16,6 +16,16 @@ class Resource:
 
         self.name = name
         self._client = client
+
+    def __str__(self):
+        return str(self.__dict__)
+
+    def __eq__(self, other):
+        return self.name == other.name
+
+    def __repr__(self):
+        return 'Resource(name={}, client={}' \
+            .format(self.name, self._client)
 
     def get(self, entity_id):
         """

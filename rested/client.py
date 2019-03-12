@@ -4,6 +4,7 @@ from __future__ import division
 
 import requests
 
+from .new import New
 from .integration import Integration
 
 
@@ -16,6 +17,16 @@ class Rested:
 
         self._integrations = integrations if integrations else list()
         self._wire_integrations(integrations=self._integrations)
+        self.new = New(self)
+
+    def __str__(self):
+        return str(self.__dict__)
+
+    def __eq__(self, other):
+        return self._integrations == other._integrations
+
+    def __repr__(self):
+        return 'Rested(integrations={}'.format(self.integrations)
 
     @property
     def integrations(self):
@@ -42,8 +53,3 @@ class Rested:
         """
         for integration in integrations:
             self._wire(integration)
-
-
-# class Integrations:
-
-#     def __init__(self, inte)

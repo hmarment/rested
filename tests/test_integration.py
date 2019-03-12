@@ -1,14 +1,6 @@
-import requests
+import pytest
 
-
-class MockResponse:
-    def __init__(self, status_code, content=None):
-        self.status_code = status_code
-        self.content = content
-
-    def json(self):
-        if type(self.content) in [list, dict]:
-            return self.content
+from rested.errors import HTTP_ERRORS
 
 
 def test_integration_resources(test_integration):
@@ -50,6 +42,12 @@ def test_integration_get(test_integration):
         "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
         "body": "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto",
     }
+
+
+def test_integration_get_bad_url(test_integration):
+
+    with pytest.raises(HTTP_ERRORS[404]):
+        test_integration._get("https://jsonplaceholder.typicode.com/pos")
 
 
 def test_integration_post(test_integration):
