@@ -2,6 +2,12 @@
 from __future__ import absolute_import
 from __future__ import division
 
+import logging
+
+logFormatter = "%(asctime)s - %(levelname)s - %(module)s:%(funcName)s " "- %(message)s"
+logging.basicConfig(format=logFormatter, level=logging.DEBUG)
+logger = logging.getLogger(__name__)
+
 
 class Resource:
     """Rest API resource."""
@@ -17,7 +23,7 @@ class Resource:
         """
 
         url = self._client._build_url(self.name, entity_id)
-
+        logger.debug("Request(url={}".format(url))
         return self._client._get(url)
 
     def post(self, json=None):

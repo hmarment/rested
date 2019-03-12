@@ -3,8 +3,13 @@ from __future__ import absolute_import
 from __future__ import division
 
 import requests
+import logging
 
 from .resource import Resource
+
+logFormatter = "%(asctime)s - %(levelname)s - %(module)s:%(funcName)s " "- %(message)s"
+logging.basicConfig(format=logFormatter, level=logging.WARNING)
+logger = logging.getLogger(__name__)
 
 
 class Integration:
@@ -39,10 +44,10 @@ class Integration:
         return "/".join(str(part).strip("/") for part in parts)
 
     def _request(self, http_method, url, json=None):
-
-        with self._session as session:
-            with session.request(http_method, url, json=json) as response:
-                return response
+        logger.debug(
+            "Request(method={}, url={}, body={}".format(http_method, url, json)
+        )
+        return self._session.request(http_method, url, json=json)
 
     def _get(self, url):
 
