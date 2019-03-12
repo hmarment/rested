@@ -32,12 +32,36 @@ def test_client(client):
     assert isinstance(client, Rested)
 
 
+def test__str__(client):
+    assert client.__str__() == "{{'_integrations': {}, 'new': {}}}" \
+        .format(client.integrations, client.new)
+
+
+def test_client__eq__equal(client):
+    assert client == Rested(integrations=[])
+
+
+def test_client__eq__unequal(client, client_with_multiple_integrations):
+    assert client != client_with_multiple_integrations
+
+
+def test_client__repr__(client):
+    assert client.__repr__() == 'Rested(integrations=[])'
+
+
 def test_client_integrations(client):
     assert hasattr(client, "integrations")
     assert isinstance(client.integrations, list)
 
 
 def test_client_add_integration(client, test_integration):
+    client._add_integration(name=test_integration.name,
+                            base_url=test_integration.base_url)
+    assert len(client.integrations) == 1
+    assert hasattr(client, test_integration.name)
+
+
+def test_client_integrate(client, test_integration):
     client.integrate(test_integration)
     assert len(client.integrations) == 1
     assert hasattr(client, test_integration.name)

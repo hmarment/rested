@@ -5,6 +5,7 @@ from __future__ import division
 import requests
 import logging
 
+from .new import New
 from .resource import Resource
 from .errors import HTTP_ERRORS
 
@@ -22,6 +23,7 @@ class Integration:
         self.base_url = base_url
         self._resources = resources if resources else list()
         self._session = session if session else requests.Session()
+        self.new = New(integration=self)
 
     def __str__(self):
         return str(self.__dict__)
@@ -36,6 +38,11 @@ class Integration:
     @property
     def resources(self):
         return self._resources
+
+    def _add_resource(self, name=None, client=None):
+
+        resource = Resource(name=name, client=client)
+        self.register(resource=resource)
 
     def register(self, resource=None):
         """

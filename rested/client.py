@@ -2,7 +2,6 @@
 from __future__ import absolute_import
 from __future__ import division
 
-import requests
 
 from .new import New
 from .integration import Integration
@@ -17,7 +16,7 @@ class Rested:
 
         self._integrations = integrations if integrations else list()
         self._wire_integrations(integrations=self._integrations)
-        self.new = New(self)
+        self.new = New(client=self)
 
     def __str__(self):
         return str(self.__dict__)
@@ -26,11 +25,17 @@ class Rested:
         return self._integrations == other._integrations
 
     def __repr__(self):
-        return 'Rested(integrations={}'.format(self.integrations)
+        return 'Rested(integrations={})'.format(self.integrations)
 
     @property
     def integrations(self):
         return self._integrations
+
+    def _add_integration(self, name=None, base_url=None, resources=None, session=None):
+        integration = Integration(
+            name=name, base_url=base_url, resources=resources, session=session)
+
+        self._wire(integration=integration)
 
     def _wire(self, integration=None):
         if integration and isinstance(integration, Integration):

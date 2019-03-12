@@ -75,3 +75,10 @@ def test_integration_delete(test_integration):
     r = test_integration._delete("https://jsonplaceholder.typicode.com/posts/1")
     print(r.content)
     assert r.status_code == 200
+
+
+def test_integration_new_resource(test_integration):
+
+    test_integration.new.resource(name="todo", client=test_integration)
+    assert len(test_integration.resources) == 1
+    assert hasattr(test_integration, "todo")
