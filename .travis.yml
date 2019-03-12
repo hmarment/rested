@@ -1,0 +1,19 @@
+language: python
+
+before_install:
+  - pip install poetry
+
+install:
+  - pip install pip -U
+  - poetry install -v
+
+script:
+  - pytest
+
+jobs:
+  include:
+    - python: "2.7"
+    - python: "3.5"
+    - python: "3.6"
+    - python: "3.7"
+      dist: xenial
