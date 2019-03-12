@@ -34,7 +34,9 @@ def test_client(client):
 
 def test__str__(client):
     assert client.__str__() == "{{'_integrations': {}, 'new': {}}}" \
-        .format(client.integrations, client.new)
+        .format(client.integrations, client.new) \
+        or client.__str__() == "{{'new': {}, '_integrations': {}}}" \
+        .format(client.new, client.integrations)
 
 
 def test_client__eq__equal(client):
