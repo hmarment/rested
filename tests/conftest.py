@@ -37,7 +37,7 @@ class MockResponse:
             raise requests.HTTPError
 
 
-def request_side_effect(http_method, url, json):
+def request_side_effect(http_method, url, headers=None, json=None):
 
     if http_method == "GET" and url == GET_URL:
         return MockResponse(200, GET_JSON)
