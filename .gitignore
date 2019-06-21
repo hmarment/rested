@@ -27,6 +27,7 @@ pip-wheel-metadata
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
+poetry.lock
 
 # Unit test / coverage reports
 .tox/
