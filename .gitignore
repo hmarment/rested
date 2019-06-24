@@ -1,6 +1,10 @@
 # OS
 .DS_Store
 
+# Dev Env
+.sublime-project
+.vscode
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
