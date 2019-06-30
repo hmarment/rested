@@ -15,11 +15,11 @@ class New:
         self._client._add_integration(name=name, base_url=base_url,
                                       resources=resources, session=session)
 
-    def resource(self, name=None, client=None):
+    def resource(self, name=None, integration=None):
         """Add a new resource."""
 
-        if not client:
+        if not integration:
             if self.integration:
-                client = self.integration
+                integration = self.integration
 
-        self._integration._add_resource(name=name, client=client)
+        self._integration._add_resource(name=name, integration=integration)

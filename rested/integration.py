@@ -5,6 +5,7 @@ from __future__ import division
 import requests
 import logging
 
+from .http import HttpClient
 from .new import New
 from .resource import Resource
 from .errors import HTTP_ERRORS
@@ -14,7 +15,7 @@ logging.basicConfig(format=logFormatter, level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 
-class Integration:
+class Integration(HttpClient):
     """Rest Integration for a specific API."""
 
     def __init__(
@@ -27,14 +28,14 @@ class Integration:
         session=None,
         authenticated=False,
     ):
-
+        super(Integration, self).__init__(session=session, default_headers=default_headers)
         self.name = name
         self.base_url = base_url
         self._auth = auth
-        self._default_headers = default_headers
+        # self._default_headers = default_headers
         self._authenticated = authenticated
         self._resources = resources if resources else list()
-        self._session = session if session else requests.Session()
+        # self._session = session if session else requests.Session()
         self.new = New(integration=self)
 
     def __str__(self):
@@ -51,9 +52,9 @@ class Integration:
     def resources(self):
         return self._resources
 
-    def _add_resource(self, name=None, client=None):
+    def _add_resource(self, name=None, integration=None):
 
-        resource = Resource(name=name, client=client)
+        resource = Resource(name=name, integration=integration)
         self.register(resource=resource)
 
     def register(self, resource=None):
@@ -73,15 +74,6 @@ class Integration:
         parts = [self.base_url] + list(parts)
         return "/".join(str(part).strip("/") for part in parts)
 
-    def _set_headers(self, headers=None):
-
-        request_headers = dict()
-
-        if headers:
-            request_headers.update(headers)
-
-        return request_headers
-
     def _authenticate(self):
         self._auth(self)
         # auth.login()
@@ -90,47 +82,47 @@ class Integration:
         if self.token and (self.token.expired() or self.token.about_to_expire()):
             self.token = self._authenticate()
 
-    def _request(self, http_method, url, headers=None, json=None):
-        """HTTP Request handler."""
+    # def _request(self, http_method, url, headers=None, json=None):
+    #     """HTTP Request handler."""
 
-        headers = self._set_headers(headers=headers)
+    #     headers = self._set_headers(headers=headers)
 
-        logger.debug(
-            "Request(method={}, url={}, headers={}, body={}".format(http_method, url, headers, json)
-        )
+    #     logger.debug(
+    #         "Request(method={}, url={}, headers={}, body={}".format(http_method, url, headers, json)
+    #     )
         
-        try:
-            response = self._session.request(http_method, url, headers=headers, json=json)
-            response.raise_for_status()
-        except requests.HTTPError:
-            raise HTTP_ERRORS[response.status_code]
-        else:
-            return response
+    #     try:
+    #         response = self._session.request(http_method, url, headers=headers, json=json)
+    #         response.raise_for_status()
+    #     except requests.HTTPError:
+    #         raise HTTP_ERRORS[response.status_code]
+    #     else:
+    #         return response
 
-    def _get(self, url, headers=None):
-        """HTTP GET."""
+    # def _get(self, url, headers=None):
+    #     """HTTP GET."""
 
-        response = self._request("GET", url, headers=headers)
+    #     response = self._request("GET", url, headers=headers)
 
-        return response
+    #     return response
 
-    def _post(self, url, headers=None, json=None):
-        """HTTP POST."""
+    # def _post(self, url, headers=None, json=None):
+    #     """HTTP POST."""
 
-        response = self._request("POST", url, headers=headers, json=json)
+    #     response = self._request("POST", url, headers=headers, json=json)
 
-        return response
+    #     return response
 
-    def _put(self, url, headers=None, json=None):
-        """HTTP PUT."""
+    # def _put(self, url, headers=None, json=None):
+    #     """HTTP PUT."""
 
-        response = self._request("PUT", url, headers=headers, json=json)
+    #     response = self._request("PUT", url, headers=headers, json=json)
 
-        return response
+    #     return response
 
-    def _delete(self, url, headers=None):
-        """HTTP DELETE."""
+    # def _delete(self, url, headers=None):
+    #     """HTTP DELETE."""
 
-        response = self._request("DELETE", url, headers=headers)
+    #     response = self._request("DELETE", url, headers=headers)
 
-        return response
+    #     return response

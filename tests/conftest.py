@@ -72,4 +72,4 @@ def test_integration(mocker):
 def test_resource(test_integration):
     """Set up a test resource."""
     print("Setting up a test resource for external integrations")
-    return Resource(name="posts", client=test_integration)
+    return Resource(name="posts", integration=test_integration)
