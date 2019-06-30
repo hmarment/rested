@@ -52,9 +52,9 @@ class Integration(HttpClient):
     def resources(self):
         return self._resources
 
-    def _add_resource(self, name=None, integration=None):
+    def _add_resource(self, name=None):
 
-        resource = Resource(name=name, integration=integration)
+        resource = Resource(name=name, integration=self)
         self.register(resource=resource)
 
     def register(self, resource=None):
@@ -63,7 +63,7 @@ class Integration(HttpClient):
         Integration.<resource-name>.
         """
         if resource and isinstance(resource, Resource):
-            setattr(resource, "_client", self)
+            setattr(resource, "_integration", self)
             setattr(self, resource.name, resource)
 
             if resource not in self._resources:

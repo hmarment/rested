@@ -3,11 +3,12 @@ from __future__ import absolute_import
 from __future__ import division
 
 from .http import HttpClient
+from .method import Method
 
 class Resource(HttpClient):
     """Rest API resource."""
 
-    def __init__(self, name=None, integration=None):
+    def __init__(self, name=None, integration=None, methods=None):
 
         super(Resource, self).__init__(
             session=integration._session,
@@ -15,8 +16,7 @@ class Resource(HttpClient):
         )
         self.name = name
         self._integration = integration
-
-
+        self._methods = methods if methods else list()
 
     def __str__(self):
         return str(self.__dict__)
@@ -30,6 +30,23 @@ class Resource(HttpClient):
 
     def _build_url(self, *parts):
         return super()._build_url(self._integration.base_url, *parts)
+
+    def _add_method(self, name=None):
+
+        method = Method(name=name, resource=self)
+        self.register(method=method)
+
+    def register(self, method=None):
+        """
+        Add a new method, accessible via
+        Resource.<method-name>.
+        """
+        if method and isinstance(method, Method):
+            setattr(method, "_resource", self)
+            setattr(self, method.name, method)
+
+            if method not in self._methods:
+                self._methods.append(method)
 
     def get(self, entity_id):
         """

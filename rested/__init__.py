@@ -4,6 +4,7 @@ from tomlkit import parse
 
 from .integration import Integration
 from .resource import Resource
+from .method import Method
 from .client import Rested
 from .auth.auth import (
     BasicAuth,
@@ -49,14 +50,26 @@ def setup(*config_files):
             auth=auth,
         )
 
-        for resource_name, spec in resources.items():
+        for resource_name, methods in resources.items():
 
             resource = Resource(
                 name=resource_name,
-                client=integration
+                integration=integration
             )
-            integration.register(resource)
 
+            for method_name, spec in methods.items():
+                endpoint = spec.get('endpoint')
+                http_method = spec.get('method')
+                accepted_params = spec.get('arguments')
+                method = Method(
+                    name=method_name,
+                    http_method=http_method,
+                    resource=resource,
+                    accepted_params=accepted_params,
+                    )
+                resource.register(method=method)
+
+            integration.register(resource)
         r.integrate(integration)
 
     return r

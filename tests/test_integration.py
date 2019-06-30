@@ -79,6 +79,6 @@ def test_integration_delete(test_integration):
 
 def test_integration_new_resource(test_integration):
 
-    test_integration.new.resource(name="todo", integration=test_integration)
+    test_integration.new.resource(name="todo")
     assert len(test_integration.resources) == 1
     assert hasattr(test_integration, "todo")
