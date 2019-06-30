@@ -76,53 +76,7 @@ class Integration(HttpClient):
 
     def _authenticate(self):
         self._auth(self)
-        # auth.login()
 
     def _refresh_authentication(self):
         if self.token and (self.token.expired() or self.token.about_to_expire()):
             self.token = self._authenticate()
-
-    # def _request(self, http_method, url, headers=None, json=None):
-    #     """HTTP Request handler."""
-
-    #     headers = self._set_headers(headers=headers)
-
-    #     logger.debug(
-    #         "Request(method={}, url={}, headers={}, body={}".format(http_method, url, headers, json)
-    #     )
-        
-    #     try:
-    #         response = self._session.request(http_method, url, headers=headers, json=json)
-    #         response.raise_for_status()
-    #     except requests.HTTPError:
-    #         raise HTTP_ERRORS[response.status_code]
-    #     else:
-    #         return response
-
-    # def _get(self, url, headers=None):
-    #     """HTTP GET."""
-
-    #     response = self._request("GET", url, headers=headers)
-
-    #     return response
-
-    # def _post(self, url, headers=None, json=None):
-    #     """HTTP POST."""
-
-    #     response = self._request("POST", url, headers=headers, json=json)
-
-    #     return response
-
-    # def _put(self, url, headers=None, json=None):
-    #     """HTTP PUT."""
-
-    #     response = self._request("PUT", url, headers=headers, json=json)
-
-    #     return response
-
-    # def _delete(self, url, headers=None):
-    #     """HTTP DELETE."""
-
-    #     response = self._request("DELETE", url, headers=headers)
-
-    #     return response

@@ -12,7 +12,7 @@ class HttpClient:
     def __init__(self, session=None, default_headers=None, logger=logger):
 
         self._session = session if session else requests.Session()
-        self._default_headers = default_headers
+        self._default_headers = default_headers if default_headers else dict()
         self._logger = logger
 
     def _set_headers(self, headers=None):
