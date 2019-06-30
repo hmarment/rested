@@ -17,10 +17,22 @@ logger = logging.getLogger(__name__)
 class Integration:
     """Rest Integration for a specific API."""
 
-    def __init__(self, name=None, base_url=None, resources=None, session=None):
+    def __init__(
+        self,
+        name=None,
+        base_url=None,
+        auth=None,
+        default_headers=None,
+        resources=None,
+        session=None,
+        authenticated=False,
+    ):
 
         self.name = name
         self.base_url = base_url
+        self._auth = auth
+        self._default_headers = default_headers
+        self._authenticated = authenticated
         self._resources = resources if resources else list()
         self._session = session if session else requests.Session()
         self.new = New(integration=self)
@@ -70,8 +82,13 @@ class Integration:
 
         return request_headers
 
-    def _authenticated(self):
-        pass
+    def _authenticate(self):
+        self._auth(self)
+        # auth.login()
+
+    def _refresh_authentication(self):
+        if self.token and (self.token.expired() or self.token.about_to_expire()):
+            self.token = self._authenticate()
 
     def _request(self, http_method, url, headers=None, json=None):
         """HTTP Request handler."""

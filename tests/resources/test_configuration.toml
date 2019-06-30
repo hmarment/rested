@@ -1,0 +1,13 @@
+[configuration]
+
+name = "amp"
+base-url = "https://amp.adsquare.com/api/v1"
+auth = "JWT"
+
+[resources]
+
+    [resources.auth.login]
+
+    endpoint = "/v1/auth/login"
+    method = "POST"
+    arguments = ["username", "password", "rememberMe"]
