@@ -5,15 +5,13 @@ before_install:
 
 install:
   - pip install pip -U
+  - pip install tox
   - poetry install -v
 
 script:
-  - pytest
+  - tox
 
 jobs:
   include:
-    - python: "2.7"
-    - python: "3.5"
-    - python: "3.6"
     - python: "3.7"
       dist: xenial
