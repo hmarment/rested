@@ -44,13 +44,13 @@ class BasicAuth(UserAuth):
 
         client._authenticated = True
         client._default_headers.update({
-            'Authorization': f'Basic: {self.encode()}'
+            'Authorization': 'Basic: {}'.format(self.encode())
         })
     
     def encode(self):
 
         return b64encode(
-            f'{self.username}:{self.password}'.encode('utf-8')
+            '{}:{}'.format(self.username, self.password).encode('utf-8')
         ).decode('utf-8')
 
 # class ApiKey(Auth):
