@@ -18,7 +18,7 @@ class Method(HttpClient):
 
         url = self._build_url(*url_params if url_params else list())
         headers = self._set_headers(headers)
-        self._request(http_method=self.http_method, url=url, headers=headers, json=_json)
+        return self._request(http_method=self.http_method, url=url, headers=headers, json=_json)
 
     def _build_url(self, *parts):
         return super()._build_url(
