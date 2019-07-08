@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rested"
-version = "0.0.4"
+version = "0.1.0"
 description = "A generic RESTful HTTP Client Framework"
 authors = ["Henry Marment <henrymarment@gmail.com>"]
 
