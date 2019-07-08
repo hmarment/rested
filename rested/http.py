@@ -47,7 +47,7 @@ class HttpClient:
 
     def _authenticate(self):
 
-        if not self._authenticated:
+        if not self._authenticated and self._auth:
             self._auth(self)
 
     def _request(self, http_method, url, headers=None, json=None, authenticate=True):
