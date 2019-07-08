@@ -7,16 +7,19 @@ from .resource import Resource
 from .method import Method
 from .client import Rested
 from .auth.credentials import User
-from .auth.auth import BasicAuth, JwtAuth
+from .auth.auth import Auth, BasicAuth, JwtAuth
 
-AUTHENTICATION = {"Basic": BasicAuth, "JWT": JwtAuth}
+AUTHENTICATION = {None: Auth, "Basic": BasicAuth, "JWT": JwtAuth}
 
 
 def _validate(config):
+    """Validate config file, ensuring it contains required information and is correctly formatted."""
+    # TODO
     return config
 
 
-def _load_config(config_file_path):
+def _load_integration_config(config_file_path):
+    """Load Integration config file - this should be a TOML file containing the base URL, authentication method, associated Resources and Methods."""
 
     try:
         config_file_as_string = open(config_file_path, "r").read()
@@ -37,23 +40,26 @@ def _load_credentials(profile_name, auth_config):
 
 
 def setup(*config_files):
-
+    """
+    Set up a Rested client based on a list of config files. Each config file represents a given 'Integration', including all associated Resources and Methods.
+    """
     r = Rested()
 
     for config_file in config_files:
 
-        config = _load_config(config_file)
+        config = _load_integration_config(config_file)
         name = config["configuration"]["name"]
         base_url = config["configuration"]["base-url"]
-        auth_config = config["configuration"]["auth"]
+        auth_config = config["configuration"].get("auth", dict())
         resources = config["resources"]
 
+        # set up authentication, including loading credentials (if relevant)
         auth_type = auth_config.get("type")
         login_resource_name = auth_config.get("login-resource")
         login_method_name = auth_config.get("login-method")
         credentials = _load_credentials(name, auth_config)
         auth = AUTHENTICATION.get(auth_type)()
-        # client.amp._set_login_method(u, login)
+
         integration = Integration(
             name=name, base_url=base_url, auth=auth, credentials=credentials
         )

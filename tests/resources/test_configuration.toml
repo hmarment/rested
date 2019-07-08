@@ -1,23 +1,18 @@
 [configuration]
 
-name = "amp"
-base-url = "https://amp.adsquare.com/api/v1"
-
-    [configuration.auth]
-    
-    type = "JWT"
-    login-resource = 'auth'
-    login-method = 'login'
+name = "test"
+base-url = "https://jsonplaceholder.typicode.com"
 
 [resources]
 
-    [resources.auth.login]
+    [resources.posts]
 
-    endpoint = "/v1/auth/login"
-    method = "POST"
-    arguments = ["username", "password", "rememberMe"]
-    authenticate = false
+    [resources.todos]
 
-    [resources.audienceProximity]
+    [resources.comments]
 
-    [resources.audiences]
+    [resources.albums]
+    
+    [resources.photos]
+
+    [resources.users]
