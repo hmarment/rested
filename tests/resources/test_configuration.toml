@@ -2,7 +2,12 @@
 
 name = "amp"
 base-url = "https://amp.adsquare.com/api/v1"
-auth = "JWT"
+
+    [configuration.auth]
+    
+    type = "JWT"
+    login-resource = 'auth'
+    login-method = 'login'
 
 [resources]
 
@@ -11,3 +16,8 @@ auth = "JWT"
     endpoint = "/v1/auth/login"
     method = "POST"
     arguments = ["username", "password", "rememberMe"]
+    authenticate = false
+
+    [resources.audienceProximity]
+
+    [resources.audiences]

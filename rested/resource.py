@@ -5,18 +5,23 @@ from __future__ import division
 from .http import HttpClient
 from .method import Method
 
-class Resource(HttpClient):
+
+class Resource:
     """Rest API resource."""
 
-    def __init__(self, name=None, integration=None, methods=None):
+    def __init__(
+        self, name=None, integration=None, methods=None, auth=None, login=None
+    ):
 
-        super(Resource, self).__init__(
-            session=integration._session,
-            default_headers=integration._default_headers
-        )
+        # super(Resource, self).__init__(
+        #     session=integration._session,
+        #     default_headers=integration._default_headers,
+        #     auth=auth
+        # )
         self.name = name
         self._integration = integration
         self._methods = methods if methods else list()
+        self._login = login
 
     def __str__(self):
         return str(self.__dict__)
@@ -25,11 +30,10 @@ class Resource(HttpClient):
         return self.name == other.name
 
     def __repr__(self):
-        return 'Resource(name={}, client={}' \
-            .format(self.name, self._integration)
+        return "Resource(name={}, client={}".format(self.name, self._integration)
 
     def _build_url(self, *parts):
-        return super()._build_url(self._integration.base_url, *parts)
+        return self._integration._build_url(self.name, *parts)
 
     def _add_method(self, name=None):
 
@@ -53,33 +57,33 @@ class Resource(HttpClient):
         Fetch a specific entity for this resource.
         """
 
-        url = self._build_url(self.name, entity_id)
-        self._logger.debug("Request(url={}".format(url))
-        return self._get(url)
+        url = self._build_url(entity_id)
+        self._integration._logger.debug("Request(url={}".format(url))
+        return self._integration._get(url)
 
     def post(self, json=None):
         """
         Create a new entity for this resource.
         """
 
-        url = self._build_url(self.name)
+        url = self._build_url()
 
-        return self._post(url, json=json)
+        return self._integration._post(url, json=json)
 
     def put(self, entity_id, json=None):
         """
         Update a specific entity for this resource.
         """
 
-        url = self._build_url(self.name, entity_id)
+        url = self._build_url(entity_id)
 
-        return self._put(url, json=json)
+        return self._integration._put(url, json=json)
 
     def delete(self, entity_id):
         """
         Delete a specific entity for this resource.
         """
 
-        url = self._build_url(self.name, entity_id)
+        url = self._build_url(entity_id)
 
-        return self._delete(url)
+        return self._integration._delete(url)

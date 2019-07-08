@@ -9,6 +9,7 @@ from .http import HttpClient
 from .new import New
 from .resource import Resource
 from .errors import HTTP_ERRORS
+from .auth.auth import UserLogin
 
 logFormatter = "%(asctime)s - %(levelname)s - %(module)s:%(funcName)s " "- %(message)s"
 logging.basicConfig(format=logFormatter, level=logging.WARNING)
@@ -23,17 +24,20 @@ class Integration(HttpClient):
         name=None,
         base_url=None,
         auth=None,
+        login=None,
+        credentials=None,
         default_headers=None,
         resources=None,
         session=None,
-        authenticated=False,
     ):
-        super(Integration, self).__init__(session=session, default_headers=default_headers)
+        super(Integration, self).__init__(
+            session=session, default_headers=default_headers, auth=auth
+        )
         self.name = name
         self.base_url = base_url
-        self._auth = auth
+        self._login = login
+        self._credentials = credentials
         # self._default_headers = default_headers
-        self._authenticated = authenticated
         self._resources = resources if resources else list()
         # self._session = session if session else requests.Session()
         self.new = New(integration=self)
@@ -45,8 +49,9 @@ class Integration(HttpClient):
         return self.name == other.name and self.base_url == other.base_url
 
     def __repr__(self):
-        return 'Integration(name={}, base_url={}, resources={}, session={}' \
-            .format(self.name, self.base_url, self._resources, self._session)
+        return "Integration(name={}, base_url={}, resources={}, session={}".format(
+            self.name, self.base_url, self._resources, self._session
+        )
 
     @property
     def resources(self):
@@ -54,7 +59,9 @@ class Integration(HttpClient):
 
     def _add_resource(self, name=None):
 
-        resource = Resource(name=name, integration=self)
+        resource = Resource(
+            name=name, integration=self, auth=self._auth, login=self._login
+        )
         self.register(resource=resource)
 
     def register(self, resource=None):
@@ -74,9 +81,17 @@ class Integration(HttpClient):
         parts = [self.base_url] + list(parts)
         return "/".join(str(part).strip("/") for part in parts)
 
-    def _authenticate(self):
-        self._auth(self)
+    # def _set_login_method(self, credentials, method):
+    #     """Set method for login call."""
 
-    def _refresh_authentication(self):
-        if self.token and (self.token.expired() or self.token.about_to_expire()):
-            self.token = self._authenticate()
+    #     self._credentials = credentials
+    #     self._login = UserLogin(self._credentials, method)
+
+    # def _authenticate(self):
+
+    #     if not self._authenticated:
+    #         self._auth(self)
+
+    # def _refresh_authentication(self):
+    #     if self.token and (self.token.expired() or self.token.about_to_expire()):
+    #         self.token = self._authenticate()
