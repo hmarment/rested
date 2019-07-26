@@ -75,6 +75,7 @@ def setup(*config_files):
                 authenticate = spec.get("authenticate", True)
                 method = Method(
                     name=method_name,
+                    endpoint=endpoint,
                     http_method=http_method,
                     resource=resource,
                     accepted_params=accepted_params,
