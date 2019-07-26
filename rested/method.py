@@ -5,6 +5,7 @@ class Method:
     def __init__(
         self,
         name=None,
+        endpoint=None,
         http_method=None,
         resource=None,
         accepted_params=None,
@@ -16,6 +17,7 @@ class Method:
         #     default_headers=resource._integration._default_headers
         # )
         self.name = name
+        self.endpoint = endpoint
         self.http_method = http_method
         self.accepted_params = accepted_params
         self._resource = resource
@@ -34,4 +36,4 @@ class Method:
         )
 
     def _build_url(self, *parts):
-        return self._resource._build_url(self.name, *parts)
+        return self._resource._build_url(self.endpoint, *parts)
