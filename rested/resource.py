@@ -52,38 +52,38 @@ class Resource:
             if method not in self._methods:
                 self._methods.append(method)
 
-    def get(self, entity_id):
+    def get(self, entity_id, *url_params):
         """
         Fetch a specific entity for this resource.
         """
 
-        url = self._build_url(entity_id)
+        url = self._build_url(entity_id, *url_params)
         self._integration._logger.debug("Request(url={}".format(url))
         return self._integration._get(url)
 
-    def post(self, json=None):
+    def post(self, json=None, *url_params):
         """
         Create a new entity for this resource.
         """
 
-        url = self._build_url()
+        url = self._build_url(*url_params)
 
         return self._integration._post(url, json=json)
 
-    def put(self, entity_id, json=None):
+    def put(self, entity_id, json=None, *url_params):
         """
         Update a specific entity for this resource.
         """
 
-        url = self._build_url(entity_id)
+        url = self._build_url(entity_id, *url_params)
 
         return self._integration._put(url, json=json)
 
-    def delete(self, entity_id):
+    def delete(self, entity_id, *url_params):
         """
         Delete a specific entity for this resource.
         """
 
-        url = self._build_url(entity_id)
+        url = self._build_url(entity_id, *url_params)
 
         return self._integration._delete(url)
